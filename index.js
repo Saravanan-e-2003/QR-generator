@@ -22,7 +22,21 @@ app.post("/generate",(req,res)=>{
 })
 
 app.get("/",(req,res)=>{
+    fs.unlink(path.join(__dirname,"public","image","my_qr.png"),(err)=>{
+        if(err){
+            console.log(err);
+        }
+    })
     res.render(path.join(__dirname,"views","index.ejs"));
+})
+
+app.get("/download",(req,res)=>{
+    res.download(path.join(__dirname,"public","image","my_qr.png"),"my_qr.png",(err)=>{
+        if(err){
+            console.log(err);
+            res.render(path.join(__dirname,"views","index.ejs"));
+        }
+    })
 })
 
 app.listen(port, ()=>{

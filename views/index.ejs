@@ -19,12 +19,15 @@
             <form action="/generate" method="post">
                 <label for="url" class="vt323-regular">Paste the link below...</label>
                 <br>
-                <input type="text" name="url">
-                <input type="submit" class="vt323-regular"> 
+                <input type="text" name="url" class="text-area vt323-regular">
+                <input type="submit" class="vt323-regular submit-btn"> 
             </form>
         </div>
         <div class="right">
             <img src="/image/my_qr.png" onerror="this.onerror=null; this.src='/image/fallbackimage.png';"  alt="QR Goes here" id="qr-img">
+            <br>
+            <br>
+            <button class="download-btn vt323-regular" onclick="window.location.href = '/download'"">Download</button>
         </div>
     </div>
     
