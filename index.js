@@ -17,26 +17,46 @@ app.set("views", path.join(__dirname, "views"));
 
 app.post("/generate",(req,res)=>{
     var qr_png = qr.image("my_qr",{type:'png',size:10});
-    qr_png.pipe(fs.createWriteStream(path.join(__dirname,"public","image","my_qr.png")));
-    res.render(path.join(__dirname,"views","index.ejs"));
+    const qrPath = path.join(__dirname, "public", "image", "my_qr.png");
+    const writeStream = fs.createWriteStream(qrPath);
+    qr_png.pipe(writeStream);
+
+    writeStream.on("finish",()=>{
+        res.render("index");
+    })
+
+    writeStream.on("error",(err)=>{
+        res.render("index",{ error: "Failed to generate QR code." });
+    })
 })
 
 app.get("/",(req,res)=>{
-    fs.unlink(path.join(__dirname,"public","image","my_qr.png"),(err)=>{
+    const qrPath = path.join(__dirname, "public", "image", "my_qr.png");
+    fs.unlink(qrPath,(err)=>{
         if(err){
             console.log(err);
         }
-    })
-    res.render(path.join(__dirname,"views","index.ejs"));
+        res.render("index");
+    });
 })
 
 app.get("/download",(req,res)=>{
-    res.download(path.join(__dirname,"public","image","my_qr.png"),"my_qr.png",(err)=>{
-        if(err){
-            console.log(err);
-            res.render(path.join(__dirname,"views","index.ejs"));
+    const qrPath = path.join(__dirname, "public", "image", "my_qr.png");
+
+    fs.access(qrPath,fs.constants.F_OK, (err)=>{
+        if (err) {
+            console.error("Download Error: File not found");
+            return res.render("index", { error: "QR Code not found. Please generate first." });
         }
+        res.download(qrPath,"my_qr.png",(err)=>{
+            if(err){
+                console.log(err);
+                res.render("index");
+            }
+        })
     })
+
+    
 })
 
 app.listen(port, ()=>{
