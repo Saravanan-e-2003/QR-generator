@@ -15,16 +15,25 @@ app.use(express.static(path.join(__dirname,"public")))
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.post("/generate",(req,res)=>{
-    const qr_png = qr.imageSync("my_qr", { type: "png" }); 
-    const qr_base64 = `data:image/png;base64,${qr_png.toString("base64")}`; 
+app.post("/generate", (req, res) => {
+    try {
+        const inputText = req.body.url || "Default QR";
+        console.log("Generating QR for:", inputText);  // Debugging log
 
-    res.render("index", { qrImage: qr_base64 });
-})
+        const qrBuffer = qr.imageSync(inputText, { type: "png" });
+        const qrBase64 = `data:image/png;base64,${qrBuffer.toString("base64")}`;
 
-app.get("/",(req,res)=>{
-    res.render("index", { qrImage: null }); 
-})
+        console.log("QR generated successfully!");  // Debugging log
+        res.render("index", { qrImage: qrBase64 });
+    } catch (error) {
+        console.error("Error generating QR:", error);
+        res.render("index", { qrImage: null });
+    }
+});
+
+app.get("/", (req, res) => {
+    res.render("index", { qrImage: null });
+});
 
 app.get("/download",(req,res)=>{
     const qrPath = path.join(__dirname, "public", "image", "my_qr.png");

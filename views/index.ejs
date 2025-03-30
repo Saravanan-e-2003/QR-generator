@@ -24,7 +24,12 @@
             </form>
         </div>
         <div class="right">
-            <img src="/image/my_qr.png" onerror="this.onerror=null; this.src='/image/fallbackimage.png';"  alt="QR Goes here" id="qr-img">
+            <!-- <img src=""  onerror="this.onerror=null; this.src='/image/fallbackimage.png';"  alt="QR Goes here" id="qr-img"> -->
+            <% if (qrImage) { %>
+                <img src="<%= qrImage %>" alt="QR Code" id="qr-img">
+            <% } else { %>
+                <img src="/image/fallbackimage.png" alt="Fallback Image" id="qr-img">
+            <% } %>
             <br>
             <br>
             <button class="download-btn vt323-regular" onclick="window.location.href = '/download'"">Download</button>
