@@ -31,19 +31,7 @@ app.post("/generate",(req,res)=>{
 })
 
 app.get("/",(req,res)=>{
-    const qrPath = path.join(__dirname, "public", "image", "my_qr.png");
-    fs.access(qrPath, fs.constants.F_OK, (err) => {
-        if (!err) {
-            fs.unlink(qrPath, (unlinkErr) => {
-                if (unlinkErr) {
-                    console.error("Error deleting file:", unlinkErr);
-                }
-                res.render("index"); 
-            });
-        } else {
-            res.render("index"); 
-        }
-    });
+    res.render("index"); 
 })
 
 app.get("/download",(req,res)=>{
