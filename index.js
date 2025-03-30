@@ -16,22 +16,14 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.post("/generate",(req,res)=>{
-    var qr_png = qr.image("my_qr",{type:'png',size:10});
-    const qrPath = path.join(__dirname, "public", "image", "my_qr.png");
-    const writeStream = fs.createWriteStream(qrPath);
-    qr_png.pipe(writeStream);
+    const qr_png = qr.imageSync("my_qr", { type: "png" }); 
+    const qr_base64 = `data:image/png;base64,${qr_png.toString("base64")}`; 
 
-    writeStream.on("finish",()=>{
-        res.render("index");
-    })
-
-    writeStream.on("error",(err)=>{
-        res.render("index",{ error: "Failed to generate QR code." });
-    })
+    res.render("index", { qrImage: qr_base64 });
 })
 
 app.get("/",(req,res)=>{
-    res.render("index"); 
+    res.render("index", { qrImage: null }); 
 })
 
 app.get("/download",(req,res)=>{
