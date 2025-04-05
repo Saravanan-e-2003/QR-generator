@@ -164,7 +164,7 @@ label{
 }
 
 
-@media (max-width: 480px) {
+@media (min-width:400px) and (max-width: 480px) {
     .contents {
       display: grid;
       grid-template-columns: 1fr; /* One column layout */
@@ -212,4 +212,47 @@ label{
         margin-top: 30px;
     }
     
+  }
+
+  @media (max-width: 399px){
+    .contents {
+        display: grid;
+        grid-template-columns: 1fr; /* One column layout */
+        grid-auto-rows: auto;       /* Rows will size automatically */
+        width: 100%;
+        height: auto;               /* Let height adjust naturally */
+        gap: 10px;                  /* Optional: spacing between items */
+    }
+  
+    .right{
+        border-top: 5px solid #363636;
+        border-left: none;
+    }
+  
+  
+    .left{
+        margin-top:5px;
+        align-items: center;
+          margin-left: 5px;
+        padding: 20px;
+          /* border: 2px solid white; */
+    }
+  
+      .submit-btn {
+          font-size: 20px;
+          width: 80px;
+          height: 45px;
+        }
+      
+        .text-area {
+          width: 200px;
+          font-size: 16px;
+          margin-left: 5px;
+        }
+  
+      label{
+          font-size: 24px;
+          margin-left: 10px;
+      }
+  
   }
